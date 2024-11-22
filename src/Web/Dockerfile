@@ -15,30 +15,21 @@ RUN pnpm run tailwind:build:minify
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:9.0@sha256:7d24e90a392e88eb56093e4eb325ff883ad609382a55d42f17fd557b997022ca AS build
 ARG BUILD_CONFIGURATION=Release
 ARG TARGETARCH
-ARG TARGETPLATFORM
-ARG TARGETOS
-ARG TARGETVARIANT
-ARG BUILDPLATFORM
-ARG BUILDOS
-ARG BUILDARCH
-ARG BUILDVARIANT
 WORKDIR /src
 COPY ["Directory.Packages.props", "Directory.Build.props", "nuget.config", "./"]
 COPY ["src/Web/Web.csproj", "src/Web/"]
 COPY ["src/Web.Client/Web.Client.csproj", "src/Web.Client/"]
 COPY ["src/Shared/Shared.csproj", "src/Shared/"]
-RUN echo "TargetArch=$TARGETARCH, TargetOS=$TARGETOS, TARGETPLATFORM=$TARGETPLATFORM, TargetVariant=$TARGETVARIANT, BuildArch=$BUILDARCH, BuildOS=$BUILDOS, BuildVariant=$BUILDVARIANT"
 RUN dotnet restore "src/Web/Web.csproj" -a $TARGETARCH
 COPY . .
 COPY --from=tailwindcss /src/src/Web/wwwroot/styles/app.css ./src/Web/wwwroot/styles/app.css
 WORKDIR "/src/src/Web"
-RUN echo "TargetArch=$TARGETARCH, TargetOS=$TARGETOS, TARGETPLATFORM=$TARGETPLATFORM, TargetVariant=$TARGETVARIANT, BuildArch=$BUILDARCH, BuildOS=$BUILDOS, BuildVariant=$BUILDVARIANT"
-RUN dotnet build "Web.csproj" -c $BUILD_CONFIGURATION -o /app/build -a $TARGETARCH
+RUN dotnet build "Web.csproj" -c $BUILD_CONFIGURATION --no-restore -o /app/build -a $TARGETARCH
 
 FROM build AS publish
 ARG TARGETARCH
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Web.csproj" -c $BUILD_CONFIGURATION -o /app/publish -a $TARGETARCH
+RUN dotnet publish "Web.csproj" -c $BUILD_CONFIGURATION --no-restore -o /app/publish -a $TARGETARCH
 
 FROM base AS final
 WORKDIR /app

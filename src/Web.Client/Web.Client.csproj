@@ -11,6 +11,7 @@
     <OptimizationPreference>Speed</OptimizationPreference>
     <WasmStripILAfterAOT>true</WasmStripILAfterAOT>
     <IsAotCompatible>true</IsAotCompatible>
+    <RequiredWorkloads>wasm-tools</RequiredWorkloads>
   </PropertyGroup>
 
   <ItemGroup>

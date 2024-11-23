@@ -25,7 +25,7 @@ jobs:
       - name: Install docker
         if: runner.os == 'macos'
         run: |
-          brew install docker docker-buildx
+          brew install docker docker-buildx colima
           colima start
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

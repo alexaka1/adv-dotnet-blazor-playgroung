@@ -44,6 +44,7 @@ jobs:
           persist-credentials: false
       - name: Build and push
         uses: docker/build-push-action@v6
+        id: docker_build
         with:
           context: .
           file: src/Web/Dockerfile
@@ -53,6 +54,18 @@ jobs:
           push: true
           tags: |
             ${{ github.repository }}:preview
-            ${{ github.repository }}:${{ github.sha }}
             ghcr.io/${{ github.repository }}:preview
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ${{ github.repository }}:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+      - name: Attest Docker hub
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: index.docker.io/${{ github.repository }}
+          subject-digest: ${{ steps.docker_build.outputs.digest }}
+          push-to-registry: true
+      - name: Attest GitHub Container Registry
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ghcr.io/${{ github.repository }}
+          subject-digest: ${{ steps.docker_build.outputs.digest }}
+          push-to-registry: true

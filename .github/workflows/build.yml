@@ -55,8 +55,6 @@ jobs:
           tags: |
             ${{ github.repository }}:preview
             ghcr.io/${{ github.repository }}:preview
-            ${{ github.repository }}:${{ github.ref_name }}
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
       - name: Attest Docker hub
         uses: actions/attest-build-provenance@v1
         with:

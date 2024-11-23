@@ -47,10 +47,12 @@ jobs:
           images: |
             name=docker.io/${{ github.repository }}
             name=ghcr.io/${{ github.repository }}
+#          labels: |
+#            org.opencontainers.image.title=Blazor Playground
+#            org.opencontainers.image.description=A simple Blazor Web App using all rendering modes, for testing purposes
+#            org.opencontainers.image.authors=alexaka1
           tags: |
-            org.opencontainers.image.title=Blazor Playground
-            org.opencontainers.image.description=A simple Blazor Web App using all rendering modes, for testing purposes
-            org.opencontainers.image.authors=alexaka1
+            
             type=raw,value=preview
             type=ref,event=branch
             type=ref,event=pr

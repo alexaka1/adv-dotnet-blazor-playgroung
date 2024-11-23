@@ -24,7 +24,9 @@ jobs:
           egress-policy: audit
       - name: Install docker
         if: contains(matrix.os, 'macos')
-        run: brew install docker docker-buildx
+        run: |
+          brew install --cask docker docker-buildx
+          open -a Docker
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - run: docker buildx inspect

@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [ ubuntu-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Harden Runner
@@ -22,6 +22,9 @@ jobs:
         with:
           disable-sudo: true
           egress-policy: audit
+      - name: Install docker
+        if: contains(matrix.os, 'macos')
+        run: brew install docker docker-buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - run: docker buildx inspect

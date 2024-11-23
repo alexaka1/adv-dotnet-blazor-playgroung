@@ -25,7 +25,8 @@ jobs:
       - name: Install docker
         if: contains(matrix.os, 'macos')
         run: |
-          brew install --cask docker docker-buildx
+          brew install --cask docker
+          brew install docker-buildx
           open -a Docker
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

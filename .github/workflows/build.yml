@@ -40,6 +40,24 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            name=docker.io/${{ github.repository }}
+            name=ghcr.io/${{ github.repository }}
+          tags: |
+            org.opencontainers.image.title=Blazor Playground
+            org.opencontainers.image.description=A simple Blazor Web App using all rendering modes, for testing purposes
+            org.opencontainers.image.authors=alexaka1
+            type=raw,value=preview
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=edge
       - name: Build and push
         uses: docker/build-push-action@v6
         id: docker_build
@@ -50,9 +68,8 @@ jobs:
           platforms: linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/arm64
           provenance: mode=max
           push: true
-          tags: |
-            docker.io/${{ github.repository }}:preview
-            ghcr.io/${{ github.repository }}:preview
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
       - name: Attest Docker hub
         uses: actions/attest-build-provenance@v1
         with:

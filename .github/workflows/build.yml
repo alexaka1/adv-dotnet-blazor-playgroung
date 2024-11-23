@@ -14,11 +14,7 @@ jobs:
       packages: write
       attestations: write
       id-token: write
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-latest ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
@@ -55,12 +51,12 @@ jobs:
           provenance: mode=max
           push: true
           tags: |
-            ${{ github.repository }}:preview
+            docker.io/${{ github.repository }}:preview
             ghcr.io/${{ github.repository }}:preview
       - name: Attest Docker hub
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: index.docker.io/${{ github.repository }}
+          subject-name: docker.io/${{ github.repository }}
           subject-digest: ${{ steps.docker_build.outputs.digest }}
           push-to-registry: true
       - name: Attest GitHub Container Registry

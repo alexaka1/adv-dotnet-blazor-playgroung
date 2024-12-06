@@ -9,3 +9,4 @@ services:
       - DISTROLESS_HEALTHCHECKS_URI=${DISTROLESS_HEALTHCHECKS_URI:-http://localhost:8080/api/healthz}
     healthcheck:
       test: [ "CMD", "/healthchecks/Distroless.HealthChecks" ]
+    pull_policy: always

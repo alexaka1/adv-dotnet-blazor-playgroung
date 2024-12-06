@@ -6,3 +6,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
       - ASPNETCORE_DETAILEDERRORS=${ASPNETCORE_DETAILEDERRORS:-true}
       - ASPNETCORE_URLS=${ASPNETCORE_URLS:-http://*:8080}
+      - DISTROLESS_HEALTHCHECKS_URI=${DISTROLESS_HEALTHCHECKS_URI:-http://localhost:8080/api/healthz}
+    healthcheck:
+      test: [ "CMD", "/healthchecks/Distroless.HealthChecks" ]

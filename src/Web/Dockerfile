@@ -35,6 +35,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "Web.csproj" -c $BUILD_CONFIGURATION --no-restore -o /app/publish -a $TARGETARCH
 
 FROM base AS final
+COPY --from=alexaka1/distroless-dotnet-healthchecks:latest / /healthchecks
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Web.dll"]

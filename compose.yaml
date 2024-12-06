@@ -5,3 +5,5 @@ services:
       context: .
       target: final
       dockerfile: src/Web/Dockerfile
+    healthcheck:
+      test: ["CMD", "/healthchecks/Distroless.HealthChecks", "--uri", "http://localhost:8080/api/healthz"]
